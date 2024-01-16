@@ -1,6 +1,7 @@
 // HomePage.jsx
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import CommonButton from "./CommonButton";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -12,8 +13,8 @@ const HomePage = () => {
   return (
     <div className="home-page" onKeyUp={handleKeyPress} tabIndex={0}>
       <h1>Welcome To Trivia Game</h1>
-      <p>Press Any key or Button to start the game</p>
-      <button className="start-button" onClick={handleKeyPress}>Start Game</button>
+      <p>Please Press Start Button to start the game</p>
+      <CommonButton className="start-button" onClick={handleKeyPress} label={"Start Game"}></CommonButton>
       <Outlet />
     </div>
   );

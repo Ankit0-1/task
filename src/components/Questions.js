@@ -4,12 +4,12 @@ import { myContext } from "../context/GlobalContext";
 import  Loader  from "../utils/Loader";
 import Shimmer from "../utils/Shimmer";
 
-const Questions = ({loading}) => {
+const Questions = ({loadingStatus, changeLoadig, disableAndEnableButton, setNextButtonDisable}) => {
     const { count, right, wrong, data, dispatch, fetchData } = useContext(myContext);
     const { incorrect_answers = [], correct_answer = '', question = '' } = data?.result || {};
     const [optionSelected, setOptionSelected] = useState({ isSelected: false, selectedAnswer: '' });
     const [suffledOption, setSuffledOption] = useState([]);
-    const [loadingStatus, setloadingStatus] = useState(loading);
+    // const [loadingStatus, changeLoadig] = useState(loading);
 
     const shuffleArray = array => {
         const shuffledArray = [...array, correct_answer];
@@ -30,47 +30,65 @@ const Questions = ({loading}) => {
             selectedAnswer: valueSelected
         }))
         valueSelected === correct_answer ? dispatch({ type: 'correct' }) : dispatch({ type: 'incorrect' });
+        setNextButtonDisable(false);
     }
 
     useEffect(() => {
         const fetchDataWrapper = async () => {
-            setloadingStatus(true);
+            changeLoadig(true);
             await fetchData();
-            setloadingStatus(false);
+            changeLoadig(false);
+
+            shuffleArray(incorrect_answers);
+            setOptionSelected({ isSelected: false, selectedAnswer: '' });
         }
-    
-        shuffleArray(incorrect_answers);
-        setOptionSelected({ isSelected: false, selectedAnswer: '' });
         fetchDataWrapper();
-    }, [data?.result]);  
+    }, []);  
    
-    console.log(data)
+    useEffect(() => {
+        // This useEffect runs whenever 'data' changes
+        if (data?.result) {
+            disableAndEnableButton();
+          shuffleArray(incorrect_answers);
+          setOptionSelected({ isSelected: false, selectedAnswer: '' });
+        }
+        setNextButtonDisable(true);
+      }, [data]); // Dependency array includes 'data'
 
     const optionToShow =
-    //  loadingStatus ? (
-    //     <Shimmer />
-    // ) : (
+     loadingStatus ? (
+        <Shimmer />
+    ) : ( 
         suffledOption.map((option, index) => (
             <div key={'optn' + index} className="answer-container">
-                <p
-                    className={optionSelected.isSelected ? (option === correct_answer ? 'answer correct disabled-paragraph' : 'answer incorrect disabled-paragraph') : 'answer'}
-                    onClick={() => handleAnswerClick(option)}
-                >
-                    {option}
-    
-                    {optionSelected.isSelected && optionSelected.selectedAnswer === option && (
-                        <span className="answer-status">
-                            {option === correct_answer ? '✔' : '✘'}
-                        </span>
-                    )}
-                </p>
+              <p
+                className={
+                  optionSelected.isSelected
+                    ? option === correct_answer
+                      ? 'answer correct disabled-paragraph'
+                      : 'answer incorrect disabled-paragraph'
+                    : 'answer'
+                }
+                onClick={() => handleAnswerClick(option)}
+                dangerouslySetInnerHTML={{
+                  __html: `${option}
+                    ${
+                      optionSelected.isSelected &&
+                      optionSelected.selectedAnswer === option
+                        ? `<span class="answer-status">${
+                            option === correct_answer ? '✔' : '✘'
+                          }</span>`
+                        : ''
+                    }`,
+                }}
+              ></p>
             </div>
-        ))
-    // );
+          ))          
+    );
 
     return (
         <div className="container twidth make-flex">
-            {/* <p id="question">{loadingStatus ? 'Loading...' : question}</p> */}
+             <p id="question" dangerouslySetInnerHTML={{ __html: loadingStatus ? 'Loading...' : question }}></p>
             <div className="optnContainer make-flex">
                 {optionToShow}
             </div>

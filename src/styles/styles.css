@@ -113,6 +113,7 @@ h2{
 	background: #6DB193;
 }
 #skip{
+	width: 100%;
 	padding: .8rem;
 	margin-top: 3px;
 	background: #ff4f02;
@@ -219,6 +220,13 @@ small{
 .score-container .score .resetscore {
     background-color: #4CAF50; /* Restart Button Color */
 	cursor: pointer;
+	text-align: center;
+    padding: 0.8rem;
+    width: 50%;
+    color: white;
+    letter-spacing: 5px;
+	font-size: 1.2rem;
+	font-weight: 700;
 }
 
 .score-container .score .next-button {
@@ -244,6 +252,7 @@ small{
 	color: #666;
 	pointer-events: none;
 	cursor: not-allowed !important; 
+
 }
 
 /* home-page.css */
@@ -295,18 +304,20 @@ small{
   .score-container .score button.next-button,
 #skip {
     padding: .8rem;
-    margin-top: 3px;
-    background: #ff4f02;
+    /* margin-top: 3px; */
+    /* background: #ff4f02; */
     color: white;
     text-align: center;
     transition-duration: 300ms;
+	font-size: 1.2rem;
+    font-weight: 700;
 }
 
-.score-container .score button.next-button:hover,
+/* .score-container .score button.next-button:hover,
 #skip:hover {
     background: #c43b00;
     cursor: pointer;
-}
+} */
 
 .start-button {
     padding: 1rem;
@@ -331,7 +342,7 @@ small{
 .app-container .score .next-button.disable,
 .app-container #skip.disable {
 	opacity: 0.6;
-	cursor: not-allowed;
+	cursor: not-allowed !important;
 	
 }
 
@@ -380,5 +391,41 @@ small{
 	100% {
 	  background-position: -200% 0;
 	}
+  }
+  .answer-container{
+	display: inline;
+  }
+  .resetscore{}
+
+  /* CommonButton.css */
+.button {
+	padding: 1rem;
+    background-color: #4CAF50; /* Green color for the start button */
+    color: white;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 5px;
+    cursor: pointer;
+    transition-duration: 300ms;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+	margin: 10px;
+  }
+  
+	/* .button:hover {
+		cursor: pointer;
+		opacity: .8;
+	} */
+  .score-container .score button.disable{
+	cursor: not-allowed;
+  } 
+
+  /* Add this style to your existing CSS */
+.questions-left {
+	margin-top: 10px;
+	font-size: 16px;
+	color: #333;
   }
   
